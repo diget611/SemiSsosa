@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <div>
 	<c:choose>
-		<c:when test="${empty loging }">
+		<c:when test="${empty login }">
 			<button type="button" class="btn login">로그인</button>
 		</c:when>
 		<c:otherwise>
@@ -12,6 +12,7 @@
 		</c:otherwise>
 	</c:choose>
 </div>
+
 
 <script>
 	$(".btn.login").on("click", clickLogin);

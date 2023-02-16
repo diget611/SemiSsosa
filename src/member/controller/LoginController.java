@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import member.service.MemberService;
+import member.vo.MemberVo;
+
 /**
  * Servlet implementation class LoginController
  */
@@ -31,7 +34,17 @@ public class LoginController extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		MemberVo vo = new MemberVo();
+		vo.setId(request.getParameter("id"));
+		vo.setPassword(request.getParameter("password"));
+		
+		MemberVo result = new MemberService().login(vo);
+		System.out.println(result);
+		if(result != null) {
+			request.getSession().setAttribute("login", result);
+			response.sendRedirect(request.getContextPath() + "/");
+		}
 	}
 
 }

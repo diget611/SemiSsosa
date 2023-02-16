@@ -13,7 +13,7 @@ public class JDBCTemplate {
 		
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@121.136.127.43:1521", "admin", "rkakrnl3");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@121.136.127.43:1521:xe", "system", "rkakrnl3");
 			conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
