@@ -13,7 +13,10 @@ public class JDBCTemplate {
 		
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@121.136.127.43:1521:xe", "system", "rkakrnl3");
+			// 개인 pc용
+			// conn = DriverManager.getConnection("jdbc:oracle:thin:@121.136.127.43:1521:xe", "system", "rkakrnl3");
+			// 학원 pc용
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "KH", "KH");
 			conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
