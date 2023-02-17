@@ -1,11 +1,12 @@
-package member.dao;
+package member.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import member.vo.MemberVo;
+import member.model.vo.MemberVo;
+
 import static common.jdbc.JDBCTemplate.*;
 
 public class MemberDao {

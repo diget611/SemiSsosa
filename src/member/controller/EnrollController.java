@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import member.service.MemberService;
-import member.vo.MemberVo;
+import member.model.service.MemberService;
+import member.model.vo.MemberVo;
 
 /**
  * Servlet implementation class EnrollController

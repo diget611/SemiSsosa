@@ -1,7 +1,7 @@
-package member.service;
+package member.model.service;
 
-import member.dao.MemberDao;
-import member.vo.MemberVo;
+import member.model.dao.MemberDao;
+import member.model.vo.MemberVo;
 
 import static common.jdbc.JDBCTemplate.*;
 
