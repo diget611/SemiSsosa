@@ -1,7 +1,6 @@
 package board.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,22 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import board.model.service.BoardService;
 
-
-/*
- * 게시판 테이블 명 BOARD_TEMP로 진행. 변경할 것
- */
-
 /**
- * Servlet implementation class BoardController
+ * Servlet implementation class BoardDetailController
  */
-@WebServlet("/board")
-public class BoardController extends HttpServlet {
+@WebServlet("/board/detail")
+public class BoardDetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardController() {
+    public BoardDetailController() {
         super();
     }
 
@@ -33,8 +27,10 @@ public class BoardController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String idx = request.getParameter("idx");
 		
-		request.setAttribute("boardList", new BoardService().getBoard());
-		request.getRequestDispatcher("/WEB-INF/view/board/board.jsp").forward(request, response);
+		request.setAttribute("boardDetail", new BoardService().getBoardDetail(idx));
+		request.getRequestDispatcher("/WEB-INF/view/board/boardDetail.jsp").forward(request, response);
 	}
+
 }
