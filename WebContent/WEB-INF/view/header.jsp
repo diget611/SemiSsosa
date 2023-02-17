@@ -18,6 +18,7 @@
 		</c:otherwise>
 	</c:choose>
 </div>
+<hr>
 
 
 <script>
