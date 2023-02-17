@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import board.model.vo.BoardVo;
+import reply.model.vo.ReplyVo;
+
 import static common.jdbc.JDBCTemplate.*;
 
 public class BoardDao {
@@ -63,6 +65,40 @@ public class BoardDao {
 				result.setBoardName(rs.getString("board_Name"));
 				result.setIdx(rs.getInt("idx"));
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public List<ReplyVo> getReplyList(Connection conn, String idx) {
+		List<ReplyVo> result = null;
+		
+		String sql = "SELECT REPLY_CONTENT, REPLY_WRITER, REPLY_DATE FROM REPLY WHERE BOARD_REF_NUM = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idx);
+			
+			rs = pstmt.executeQuery();
+			System.out.println(rs.next());
+			result = new ArrayList<ReplyVo>();
+			while(rs.next()) {
+				ReplyVo vo = new ReplyVo();
+				vo.setReplyContent(rs.getString("reply_Content"));
+				vo.setReplyDate(rs.getDate("reply_Date"));
+				vo.setReplyWriter(rs.getString("reply_Writer"));
+				result.add(vo);
+			}
+			
+			System.out.println(result);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

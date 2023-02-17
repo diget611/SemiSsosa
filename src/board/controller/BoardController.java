@@ -13,6 +13,7 @@ import board.model.service.BoardService;
 
 /*
  * 게시판 테이블 명 BOARD_TEMP로 진행. 변경할 것
+ * 인덱스랑 카테고리로 분류해서 카테고리별 게시판
  */
 
 /**

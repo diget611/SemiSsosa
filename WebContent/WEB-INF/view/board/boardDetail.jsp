@@ -13,5 +13,6 @@
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
 	${boardDetail }
+	${replyList }
 </body>
 </html>

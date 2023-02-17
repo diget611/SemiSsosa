@@ -30,6 +30,7 @@ public class BoardDetailController extends HttpServlet {
 		String idx = request.getParameter("idx");
 		
 		request.setAttribute("boardDetail", new BoardService().getBoardDetail(idx));
+		request.setAttribute("replyList", new BoardService().getReplyList(idx));
 		request.getRequestDispatcher("/WEB-INF/view/board/boardDetail.jsp").forward(request, response);
 	}
 
