@@ -11,40 +11,37 @@ import member.model.service.MemberService;
 import member.model.vo.MemberVo;
 
 /**
- * Servlet implementation class EnrollController
+ * Servlet implementation class UpdateInfoController
  */
-@WebServlet("/enroll")
-public class EnrollController extends HttpServlet {
+@WebServlet("/updateinfo")
+public class UpdateInfoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EnrollController() {
+    public UpdateInfoController() {
         super();
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/member/enroll.jsp").forward(request, response);
-	}
-
+    
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		MemberVo vo = new MemberVo();
-		vo.setId(request.getParameter("id"));
-		vo.setPassword(request.getParameter("password"));
+		String id = ((MemberVo)request.getSession().getAttribute("login")).getId();
+		vo.setId(id);
+		vo.setPassword(request.getParameter("pwChange"));
 		vo.setName(request.getParameter("name"));
 		vo.setEmail(request.getParameter("email"));
 		
-		int result = new MemberService().enroll(vo);
+		int result = new MemberService().updateInfo(vo);
 		
 		if(result == 1) {
+			request.getSession().invalidate();
 			response.sendRedirect(request.getContextPath() + "/");
+		} else {
+			request.getRequestDispatcher("/WEB-INF/view/member/mypage.jsp").forward(request, response);;
 		}
 	}
 

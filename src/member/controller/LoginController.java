@@ -40,9 +40,10 @@ public class LoginController extends HttpServlet {
 		vo.setPassword(request.getParameter("password"));
 		
 		MemberVo result = new MemberService().login(vo);
-		System.out.println(result);
 		if(result != null) {
 			request.getSession().setAttribute("login", result);
+			response.sendRedirect(request.getContextPath() + "/");
+		} else {
 			response.sendRedirect(request.getContextPath() + "/");
 		}
 	}

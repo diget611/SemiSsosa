@@ -24,5 +24,21 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+
+	public MemberVo getInfo(String id) {
+		MemberVo result = null;
+		Connection conn = getConnection();
+		result = new MemberDao().getInfo(conn, id);
+		close(conn);
+		return result;
+	}
+
+	public int updateInfo(MemberVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new MemberDao().updateInfo(conn, vo);
+		close(conn);
+		return result;
+	}
 	
 }

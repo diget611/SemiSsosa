@@ -12,6 +12,15 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	메인 페이지가 될 자리입니다.
+	<div>
+		<button type="button" class="btn mypage">마이페이지</button>
+	</div>
+	
+	<script>
+		$('.btn.mypage').on("click", clickMypage);
+		function clickMypage() {
+			location.href="<%=request.getContextPath()%>/mypage";
+		}
+	</script>
 </body>
 </html>

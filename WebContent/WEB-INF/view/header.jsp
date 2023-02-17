@@ -24,6 +24,6 @@
 	}
 	function clickLogout() {
 		console.log("로그아웃 버튼 클릭");
-		location.href="<%=request.getContextPath()%>/logout"
+		location.href="<%=request.getContextPath()%>/logout";
 	}
 </script>

@@ -30,8 +30,6 @@ public class MemberDao {
 				result.setName(rs.getString("name"));
 				result.setEmail(rs.getString("email"));
 			}
-			
-			System.out.println(result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -54,14 +52,71 @@ public class MemberDao {
 			pstmt.setString(3, vo.getName());
 			pstmt.setString(4, vo.getEmail());
 			result = pstmt.executeUpdate();
-			
-			System.out.println(result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			commit(conn);
 			close(pstmt);
 		}
+		return result;
+	}
+
+	public MemberVo getInfo(Connection conn, String id) {
+		MemberVo result = null;
+		
+		String sql = "SELECT ID, PASSWORD, NAME, EMAIL FROM MEMBER WHERE ID = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = new MemberVo();
+				result.setId(rs.getString("id"));
+				result.setPassword(rs.getString("password"));
+				result.setName(rs.getString("name"));
+				result.setEmail(rs.getString("email"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int updateInfo(Connection conn, MemberVo vo) {
+		int result = -1;
+		
+		String sql = "UPDATE MEMBER SET PASSWORD = ?, NAME = ?, EMAIL = ? WHERE ID = ?";
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPassword());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(4, vo.getId());
+			
+			result = pstmt.executeUpdate();
+			
+			if(result == 1) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
 		return result;
 	}
 
