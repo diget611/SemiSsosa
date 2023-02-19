@@ -34,4 +34,12 @@ public class BoardService {
 		close(conn);
 		return result;
 	}
+
+	public int writePost(BoardVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().writePost(conn, vo);
+		close(conn);
+		return result;
+	}
 }

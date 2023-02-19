@@ -17,7 +17,7 @@ public class BoardDao {
 	public List<BoardVo> getBoard(Connection conn) {
 		List<BoardVo> result = null;
 		
-		String sql = "SELECT IDX, BOARD_NAME, BOARD_CONTENT, BOARD_WRITER, BOARD_DATE FROM BOARD_TEMP ORDER BY IDX DESC";
+		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD ORDER BY IDX DESC";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -28,11 +28,11 @@ public class BoardDao {
 			result = new ArrayList<BoardVo>();
 			while(rs.next()) {
 				BoardVo vo = new BoardVo();
-				vo.setBoardContent(rs.getString("board_Content"));
-				vo.setBoardDate(rs.getDate("board_Date"));
-				vo.setBoardName(rs.getString("board_Name"));
-				vo.setBoardWriter(rs.getString("board_Writer"));
+				vo.setCreateDate(rs.getDate("createDate"));
 				vo.setIdx(rs.getInt("idx"));
+				vo.setPostName(rs.getString("postName"));
+				vo.setViews(rs.getInt("views"));
+				vo.setWriter(rs.getString("writer"));
 				result.add(vo);
 			}
 		} catch (SQLException e) {
@@ -47,7 +47,7 @@ public class BoardDao {
 	public BoardVo getBoardDetail(Connection conn, String idx) {
 		BoardVo result = null;
 		
-		String sql = "SELECT IDX, BOARD_NAME, BOARD_CONTENT, BOARD_WRITER, BOARD_DATE FROM BOARD_TEMP WHERE IDX = ?";
+		String sql = "SELECT IDX, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -59,11 +59,12 @@ public class BoardDao {
 			
 			if(rs.next()) {
 				result = new BoardVo();
-				result.setBoardContent(rs.getString("board_Content"));
-				result.setBoardDate(rs.getDate("board_Date"));
-				result.setBoardWriter(rs.getString("board_Writer"));
-				result.setBoardName(rs.getString("board_Name"));
+				result.setContent(rs.getString("content"));
+				result.setCreateDate(rs.getDate("createDate"));
 				result.setIdx(rs.getInt("idx"));
+				result.setPostName(rs.getString("postName"));
+				result.setViews(rs.getInt("views"));
+				result.setWriter(rs.getString("writer"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -72,6 +73,25 @@ public class BoardDao {
 			close(pstmt);
 		}
 		
+		return result;
+	}
+	
+	public int writePost(Connection conn, BoardVo vo) {
+		int result = -1;
+		String sql = "INSERT INTO BOARD VALUES(SEQ_BOARD.NEXTVAL, 1, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPostName());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getWriter());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 
@@ -108,5 +128,6 @@ public class BoardDao {
 		
 		return result;
 	}
+
 
 }

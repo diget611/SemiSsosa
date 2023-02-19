@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/view/header.jsp"/>
 	<h4>게시판임</h4>
 	<table class="table">
 		<thead>
@@ -22,11 +23,21 @@
 		<c:forEach items="${boardList }" var="board">
 			<tr>
 				<td>${board.idx} </td>
-				<td><a href='<%=request.getContextPath()%>/board/detail?idx=${board.idx }'>${board.boardName }</a></td>
-				<td>${board.boardWriter }</td>
-				<td>${board.boardDate }</td>
+				<td><a href='<%=request.getContextPath()%>/board/detail?idx=${board.idx }'>${board.postName }</a></td>
+				<td>${board.writer }</td>
+				<td>${board.createDate }</td>
 			</tr>
 		</c:forEach>
 	</table>
+	<button type='button' name='writePost'>글쓰기</button>
+	
+	<script>
+		$('[name=writePost]').on('click', clickWrite);
+		
+		function clickWrite() {
+			location.href = '<%=request.getContextPath()%>/writePost';
+		};
+		
+	</script>
 </body>
 </html>
