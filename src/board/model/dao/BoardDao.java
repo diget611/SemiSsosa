@@ -17,7 +17,7 @@ public class BoardDao {
 	public List<BoardVo> getBoard(Connection conn) {
 		List<BoardVo> result = null;
 		
-		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD ORDER BY IDX DESC";
+		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T ORDER BY IDX DESC";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -47,9 +47,12 @@ public class BoardDao {
 	public BoardVo getBoardDetail(Connection conn, String idx) {
 		BoardVo result = null;
 		
-		String sql = "SELECT IDX, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD WHERE IDX = ?";
+		String sql = "SELECT IDX, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD_T WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
+		String sqlUp = "UPDATE BOARD_T SET VIEWS = VIEWS + 1 WHERE IDX = ?";
+		PreparedStatement pstmtUp = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -63,9 +66,14 @@ public class BoardDao {
 				result.setCreateDate(rs.getDate("createDate"));
 				result.setIdx(rs.getInt("idx"));
 				result.setPostName(rs.getString("postName"));
-				result.setViews(rs.getInt("views"));
+				result.setViews(rs.getInt("views") + 1);
 				result.setWriter(rs.getString("writer"));
-			}
+				
+				pstmtUp = conn.prepareStatement(sqlUp);
+				pstmtUp.setString(1, idx);
+				
+				pstmtUp.executeUpdate();
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -76,9 +84,13 @@ public class BoardDao {
 		return result;
 	}
 	
+	public void addViews() {
+		
+	}
+	
 	public int writePost(Connection conn, BoardVo vo) {
 		int result = -1;
-		String sql = "INSERT INTO BOARD VALUES(SEQ_BOARD.NEXTVAL, 1, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, 1, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
 		
 		PreparedStatement pstmt = null;
 		
