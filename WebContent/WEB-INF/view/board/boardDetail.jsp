@@ -41,11 +41,12 @@
 		}
 		
 		function clickReplyToRe() {
-			if($(this).next().children('[name=groupNum]').next('[name=reply]') == null) {
-				$(this).next().append('<input type="text" name="reply"><button class="btn reply">replll</button>');				
+			if($(this).next().children('[name=groupNum]').next('[name=reply]').html() == null) {
+				console.log("a");
+				$(this).next().children('[name=groupNum]').after('<input type="text" name="reply"><button class="btn reply">replll</button>');
 			} else {
-				$(this).next().children('[name=groupNum]').siblings().next().html();
-				$(this).next().append('<input type="text" name="reply"><button class="btn reply">replll</button>');
+				console.log("b");
+				$(this).next().children('[name=groupNum]').next().html('');
 			}
 			
 		}
