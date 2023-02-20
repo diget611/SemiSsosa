@@ -41,7 +41,13 @@
 		}
 		
 		function clickReplyToRe() {
-			$(this).next().append('<input type="text" name="reply"><button class="btn reply">replll</button>');
+			if($(this).next().children('[name=groupNum]').next('[name=reply]') == null) {
+				$(this).next().append('<input type="text" name="reply"><button class="btn reply">replll</button>');				
+			} else {
+				$(this).next().children('[name=groupNum]').siblings().next().html();
+				$(this).next().append('<input type="text" name="reply"><button class="btn reply">replll</button>');
+			}
+			
 		}
 	</script>
 </body>
