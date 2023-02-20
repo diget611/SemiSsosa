@@ -17,7 +17,8 @@ public class BoardDao {
 	public List<BoardVo> getBoard(Connection conn) {
 		List<BoardVo> result = null;
 		
-		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T ORDER BY IDX DESC";
+		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T"
+				+ " WHERE DELETEDATE IS NULL ORDER BY IDX DESC";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
