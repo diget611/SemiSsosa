@@ -14,16 +14,17 @@ import static common.jdbc.JDBCTemplate.*;
 
 public class BoardDao {
 
-	public List<BoardVo> getBoard(Connection conn) {
+	public List<BoardVo> getBoard(Connection conn, String idx) {
 		List<BoardVo> result = null;
 		
 		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T"
-				+ " WHERE DELETEDATE IS NULL ORDER BY IDX DESC";
+				+ " WHERE CATEGORY = ? AND DELETEDATE IS NULL ORDER BY IDX DESC";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idx);
 			rs = pstmt.executeQuery();
 			
 			result = new ArrayList<BoardVo>();
@@ -107,11 +108,39 @@ public class BoardDao {
 		}
 		return result;
 	}
+	
+	public ReplyVo getReplyInfo(Connection conn, String postNumber) {
+		ReplyVo result = null;
+		
+		String sql = "SELECT MAX(ORDERS) AS MAXORD, MAX(GROUPNUM) AS MAXGROUP FROM REPLY WHERE POSTNUMBER = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,  postNumber);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = new ReplyVo();
+				result.setOrders(rs.getInt(1));
+				result.setGroupNum(rs.getInt(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 
 	public List<ReplyVo> getReplyList(Connection conn, String idx) {
 		List<ReplyVo> result = null;
 		
-		String sql = "SELECT REPLY_CONTENT, REPLY_WRITER, REPLY_DATE FROM REPLY WHERE BOARD_REF_NUM = ?";
+		String sql = "SELECT POSTNUMBER, CONTENT, CREATEDATE, ORDERS, FLOOR, GROUPNUM, WRITER FROM REPLY WHERE POSTNUMBER = ? AND DELETEDATE IS NULL ORDER BY ORDERS";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -120,17 +149,19 @@ public class BoardDao {
 			pstmt.setString(1, idx);
 			
 			rs = pstmt.executeQuery();
-			System.out.println(rs.next());
+			
 			result = new ArrayList<ReplyVo>();
 			while(rs.next()) {
 				ReplyVo vo = new ReplyVo();
-				vo.setReplyContent(rs.getString("reply_Content"));
-				vo.setReplyDate(rs.getDate("reply_Date"));
-				vo.setReplyWriter(rs.getString("reply_Writer"));
+				vo.setContent(rs.getString("content"));
+				vo.setCreateDate(rs.getDate("createDate"));
+				vo.setFloor(rs.getInt("floor"));
+				vo.setGroupNum(rs.getInt("groupNum"));
+				vo.setOrders(rs.getInt("orders"));
+				vo.setWriter(rs.getString("writer"));
+				vo.setPostNumber(rs.getInt("postNumber"));
 				result.add(vo);
 			}
-			
-			System.out.println(result);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -140,6 +171,69 @@ public class BoardDao {
 		}
 		
 		return result;
+	}
+
+	public int insertReply(Connection conn, ReplyVo vo) {
+		int result = -1;
+//ReplyVo [idx=0, postNumber=3, content=, createDate=null, updateDate=null, deleteDate=null, orders=5, floor=0, groupNum=1, writer=user2]
+		String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, 0, ?, ?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getPostNumber());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setInt(3, vo.getOrders() + 1);
+			pstmt.setInt(4, vo.getGroupNum() + 1);
+			pstmt.setString(5, vo.getWriter());
+			
+			result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				commit(conn);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int insertReplyTo(Connection conn, ReplyVo vo) {
+		int result = -1;
+		int resultOrder = -1;
+		//ReplyVo [idx=0, postNumber=13, content=, createDate=null, updateDate=null, deleteDate=null, orders=1, floor=0, groupNum=1, writer=user2]
+			String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?, ?, ?)";
+			String sqlOrder = "UPDATE REPLY SET ORDERS = ORDERS + 1 WHERE ORDERS > ?"; 
+			PreparedStatement pstmt = null;
+			PreparedStatement pstmtOrder = null;
+			try {
+				pstmtOrder = conn.prepareStatement(sqlOrder);
+				pstmtOrder.setInt(1, vo.getOrders());
+				
+				resultOrder = pstmtOrder.executeUpdate();
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, vo.getPostNumber());
+				pstmt.setString(2, vo.getContent());
+				pstmt.setInt(3, vo.getOrders() + 1);
+				pstmt.setInt(4, vo.getFloor() + 1);
+				pstmt.setInt(5, vo.getGroupNum());
+				pstmt.setString(6, vo.getWriter());
+				
+				result = pstmt.executeUpdate();
+				
+				if(result > 0 && resultOrder > 0) {
+					commit(conn);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
+			return result;
 	}
 
 

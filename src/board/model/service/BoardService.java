@@ -11,10 +11,10 @@ import static common.jdbc.JDBCTemplate.*;
 
 public class BoardService {
 
-	public List<BoardVo> getBoard() {
+	public List<BoardVo> getBoard(String idx) {
 		List<BoardVo> result = null;
 		Connection conn = getConnection();
-		result = new BoardDao().getBoard(conn);
+		result = new BoardDao().getBoard(conn, idx);
 		close(conn);
 		return result;
 	}
@@ -26,7 +26,14 @@ public class BoardService {
 		close(conn);
 		return result;
 	}
-
+	
+	public ReplyVo getReplyInfo(String postNumber) {
+		ReplyVo result = null;
+		Connection conn = getConnection();
+		result = new BoardDao().getReplyInfo(conn, postNumber);
+		return result;
+	}
+	
 	public List<ReplyVo> getReplyList(String idx) {
 		List<ReplyVo> result = null;
 		Connection conn = getConnection();
@@ -39,6 +46,22 @@ public class BoardService {
 		int result = -1;
 		Connection conn = getConnection();
 		result = new BoardDao().writePost(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int insertReply(ReplyVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().insertReply(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int insertReplyTo(ReplyVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().insertReplyTo(conn, vo);
 		close(conn);
 		return result;
 	}

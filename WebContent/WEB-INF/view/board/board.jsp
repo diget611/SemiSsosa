@@ -39,7 +39,6 @@
 		function clickWrite() {
 			location.href = '<%=request.getContextPath()%>/writePost';
 		};
-		
 	</script>
 </body>
 </html>

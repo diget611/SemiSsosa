@@ -34,8 +34,9 @@ public class BoardController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String idx = request.getParameter("idx");
 		
-		request.setAttribute("boardList", new BoardService().getBoard());
+		request.setAttribute("boardList", new BoardService().getBoard(idx));
 		request.getRequestDispatcher("/WEB-INF/view/board/board.jsp").forward(request, response);
 	}
 }

@@ -30,9 +30,9 @@ public class WritePostController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("login") != null) {
-			request.getRequestDispatcher("/WEB-INF/view/board/writePost.jsp").forward(request, response);			
+			request.getRequestDispatcher("/WEB-INF/view/board/writePost.jsp").forward(request, response);
 		} else {
-			response.sendRedirect(request.getContextPath() + "/board");
+			response.sendRedirect(request.getHeader("referer"));
 		}
 	}
 
