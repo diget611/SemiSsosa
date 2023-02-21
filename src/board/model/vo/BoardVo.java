@@ -18,6 +18,7 @@ public class BoardVo {
 	 */
 	
 	private int idx;
+	private int category;
 	private String postName;
 	private String content;
 	private Date createDate;
@@ -29,9 +30,9 @@ public class BoardVo {
 	
 	@Override
 	public String toString() {
-		return "BoardVo [idx=" + idx + ", postName=" + postName + ", content=" + content + ", createDate=" + createDate
-				+ ", updateDate=" + updateDate + ", deleteDate=" + deleteDate + ", writer=" + writer + ", havFile="
-				+ havFile + ", views=" + views + "]";
+		return "BoardVo [idx=" + idx + ", category=" + category + ", postName=" + postName + ", content=" + content
+				+ ", createDate=" + createDate + ", updateDate=" + updateDate + ", deleteDate=" + deleteDate
+				+ ", writer=" + writer + ", havFile=" + havFile + ", views=" + views + "]";
 	}
 
 	public int getIdx() {
@@ -40,6 +41,14 @@ public class BoardVo {
 
 	public void setIdx(int idx) {
 		this.idx = idx;
+	}
+	
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
 	}
 
 	public String getPostName() {

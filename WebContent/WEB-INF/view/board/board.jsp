@@ -13,6 +13,7 @@
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
 	<h4>게시판임</h4>
+	<hr>
 	<table class="table">
 		<thead>
 			<th>글번호</th>
@@ -37,7 +38,7 @@
 		$('[name=writePost]').on('click', clickWrite);
 		
 		function clickWrite() {
-			location.href = '<%=request.getContextPath()%>/writePost';
+			location.href = '<%=request.getContextPath()%>/writePost?idx="${category }"';
 		};
 	</script>
 </body>

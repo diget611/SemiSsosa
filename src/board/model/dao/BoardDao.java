@@ -92,15 +92,16 @@ public class BoardDao {
 	
 	public int writePost(Connection conn, BoardVo vo) {
 		int result = -1;
-		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, 1, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
 		
 		PreparedStatement pstmt = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getPostName());
-			pstmt.setString(2, vo.getContent());
-			pstmt.setString(3, vo.getWriter());
+			pstmt.setInt(1, vo.getCategory());
+			pstmt.setString(2, vo.getPostName());
+			pstmt.setString(3, vo.getContent());
+			pstmt.setString(4, vo.getWriter());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
