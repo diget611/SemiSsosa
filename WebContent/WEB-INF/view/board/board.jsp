@@ -38,7 +38,7 @@
 		$('[name=writePost]').on('click', clickWrite);
 		
 		function clickWrite() {
-			location.href = '<%=request.getContextPath()%>/writePost?idx="${category }"';
+			location.href = '<%=request.getContextPath()%>/writePost?idx=${category }';
 		};
 	</script>
 </body>
