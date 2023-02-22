@@ -93,7 +93,7 @@ public class BoardDao {
 	
 	public int writePost(Connection conn, BoardVo vo) {
 		int result = -1;
-		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT, DEFAULT)";
 		
 		PreparedStatement pstmt = null;
 		

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import board.model.service.BoardService;
+
 /**
  * Servlet implementation class HomeController
  */
@@ -25,6 +27,13 @@ public class HomeController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setAttribute("board1", 1);
+		request.setAttribute("board1List", new BoardService().getBoard("1", 1, 5));
+		request.setAttribute("board2", 2);
+		request.setAttribute("board2List", new BoardService().getBoard("2", 1, 5));
+		request.setAttribute("board3", 3);
+		request.setAttribute("board3List", new BoardService().getBoard("3", 1, 5));
 		request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
 	}
 }

@@ -15,8 +15,14 @@
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
 	<div class="container-center">
-		<h4>게시판<%=request.getParameter("idx") %></h4>
-		<hr>
+		<div class="row justify-content-between">
+			<div class="col-4">
+				<span style="font-size: 20px; font-weight: bold;">게시판<%=request.getParameter("idx") %></span>
+			</div>
+			<div class="col-2">
+				<button type='button' name='writePost' class="btn btn-secondary btn-sm">글쓰기</button>
+			</div>
+		</div>
 		<table class="table table-striped table-hover table-lg">
 			<thead>
 				<tr>
@@ -41,10 +47,10 @@
 			<ul class="pagination justify-content-center">
 			<c:choose>
 				<c:when test="${currPage - 1 le 0 }">
-					<li class="page-item disabled"><a class="page-link">Previous</a></li>
+					<li class="page-item disabled"><a class="page-link">&lt;&lt;</a></li>
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage - 1}">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage - 1}">&lt;&lt;</a></li>
 				</c:otherwise>
 			</c:choose>
 			<c:forEach var="paging" begin="${start }" end="${end }" step="1">
@@ -52,15 +58,14 @@
 			</c:forEach>
 	  		<c:choose>
 				<c:when test="${currPage + 1 > page }">
-					<li class="page-item disabled"><a class="page-link">Next</a></li>
+					<li class="page-item disabled"><a class="page-link">&gt;&gt;</a></li>
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage + 1}">Next</a></li>
+					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage + 1}">&gt;&gt;</a></li>
 				</c:otherwise>
 			</c:choose>
 	  		</ul>
 		</nav>
-		<button type='button' name='writePost'>글쓰기</button>
 	</div>
 	
 	<script>
