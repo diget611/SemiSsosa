@@ -17,6 +17,7 @@
 
 	<form action="writePost" method="post">
 		제목 <input type="text" name="title"><br>
+		<input type="hidden" value="<%=request.getParameter("idx") %>" name="category">
 		내용
 		<textarea rows="" cols="" name="content" id="editor"></textarea>
 		<button>글쓰기</button>

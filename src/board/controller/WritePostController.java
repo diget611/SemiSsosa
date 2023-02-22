@@ -41,7 +41,7 @@ public class WritePostController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = ((MemberVo)(request.getSession().getAttribute("login"))).getId();
-		int category = Integer.parseInt(request.getParameter("idx"));
+		int category = Integer.parseInt(request.getParameter("category"));
 		
 		BoardVo vo = new BoardVo();
 		vo.setPostName(request.getParameter("title"));
