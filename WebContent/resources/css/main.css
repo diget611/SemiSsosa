@@ -1,0 +1,17 @@
+body {
+}
+
+th {
+	font-weight: bold;
+	text-align: center;
+}
+
+.title {
+	font-size: 30px;
+}
+
+.container-center {
+    width: 840px;
+    margin-left: auto;
+    margin-right: auto;
+}

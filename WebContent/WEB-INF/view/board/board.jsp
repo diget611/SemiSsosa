@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,38 +14,40 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	<h4>게시판임</h4>
-	<hr>
-	<table class="table">
-		<thead>
-			<th>글번호</th>
-			<th>제목</th>
-			<th>작성자</th>
-			<th>작성일</th>
-			<th>조회수</th>
-		<thead>
-		<c:forEach items="${boardList }" var="board">
-			<tr>
-				<td>${board.idx} </td>
-				<td><a href='<%=request.getContextPath()%>/board/detail?idx=${board.idx }'>${board.postName }</a></td>
-				<td>${board.writer }</td>
-				<td>${board.createDate }</td>
-				<td>${board.views }</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<nav aria-label="Page navigation example">
-		<ul class="pagination">
-		<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-	    <li class="page-item"><a class="page-link" href="#">1</a></li>
-	    <li class="page-item"><a class="page-link" href="#">2</a></li>
-	    <li class="page-item"><a class="page-link" href="#">3</a></li>
-	    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  		</ul>
-	</nav>
-	<button type='button' name='writePost'>글쓰기</button>
-	
-	
+	<div class="container-center">
+		<h4>게시판임</h4>
+		<hr>
+		<table class="table table-striped table-hover table-lg">
+			<thead>
+				<tr>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>		
+				</tr>
+			<thead>
+			<tbody>
+				<c:forEach items="${boardList }" var="board">
+					<tr>
+						<td><a class="text-dark" style="text-decoration: none;" href='<%=request.getContextPath()%>/board/detail?idx=${board.idx }'>${board.postName }</a></td>
+						<td style="text-align: center;">${board.writer }</td>
+						<td style="text-align: center;">${board.createDate }</td>
+						<td style="text-align: center;">${board.views }</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<nav>
+			<ul class="pagination">
+			<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging - 1}">Previous</a></li>
+			<c:forEach var="paging" begin="1" end="${page }" step="1">
+				<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging}">${paging}</a></li>
+			</c:forEach>
+		    <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging + 1}">Next</a></li>
+	  		</ul>
+		</nav>
+		<button type='button' name='writePost'>글쓰기</button>
+	</div>
 	
 	<script>
 		$('[name=writePost]').on('click', clickWrite);

@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,11 +14,17 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	<div>
+	<div class="container-center">
 		<form action="login" method="post">
-			ID : <input type="text" name="id">
-			PW : <input type="password" name="password">
-			<button type="submit">로그인</button>
+			<div class="form-floating mb-3">
+				<input type="text" class="form-control" id="floatingInput" placeholder="ID" name="id">
+				<label for="floatingInput">ID</label>
+			</div>
+			<div class="form-floating mb-3">
+				<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+				<label for="floatingPassword">Password</label>
+			</div>
+			<button type="submit" class="btn btn-secondary btn-lg">로그인</button>
 		</form>
 	</div>
 </body>

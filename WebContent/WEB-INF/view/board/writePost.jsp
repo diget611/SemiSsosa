@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -13,15 +15,15 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	글쓰기 페이지
-
-	<form action="writePost" method="post">
-		제목 <input type="text" name="title"><br>
-		<input type="hidden" value="<%=request.getParameter("idx") %>" name="category">
-		내용
-		<textarea rows="" cols="" name="content" id="editor"></textarea>
-		<button>글쓰기</button>
-	</form>
+	<div class="container-center">
+		<form action="writePost" method="post">
+			제목 <input type="text" name="title"><br>
+			<input type="hidden" value="<%=request.getParameter("idx") %>" name="category">
+			내용
+			<textarea rows="" cols="" name="content" id="editor"></textarea>
+			<button>글쓰기</button>
+		</form>
+	</div>
 	
 	<script>
       ClassicEditor.create( document.querySelector( '#editor' ) );

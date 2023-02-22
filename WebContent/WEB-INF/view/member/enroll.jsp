@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,7 +14,7 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	<div>
+	<div class="container-center">
 		<form action="enroll" method="post">
 			ID : <input type="text" name="id"><br>
 			PW : <input type="password" name="password"><br>

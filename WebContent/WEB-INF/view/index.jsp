@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,15 +14,7 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	<div>
-		<button type="button" class="btn mypage">마이페이지</button>
+	<div class="container-center">
 	</div>
-	
-	<script>
-		$('.btn.mypage').on("click", clickMypage);
-		function clickMypage() {
-			location.href="<%=request.getContextPath()%>/mypage";
-		}
-	</script>
 </body>
 </html>

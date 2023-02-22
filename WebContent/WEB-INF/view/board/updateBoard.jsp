@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
@@ -13,22 +15,20 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	수정 페이지
-
-	<form action="updateBoard" method="post">
-		<input type="hidden" value="<%=request.getParameter("idx") %>" name="idx">
-		<input type="hidden" value="<%=request.getParameter("category") %>" name="category">
-		<input type="Hidden" value="<%=request.getParameter("writer") %>" name="writer">
-		제목 <input type="text" name="title"><br>
-		내용
-		<textarea rows="" cols="" name="content" id="editor"></textarea>
-		<button type="submit">수정하기</button>
-	</form>
+	<div class="container-center">
+		<form action="updateBoard" method="post">
+			<input type="hidden" value="<%=request.getParameter("idx") %>" name="idx">
+			<input type="hidden" value="<%=request.getParameter("category") %>" name="category">
+			<input type="Hidden" value="<%=request.getParameter("writer") %>" name="writer">
+			제목 <input type="text" name="title"><br>
+			내용
+			<textarea rows="" cols="" name="content" id="editor"></textarea>
+			<button type="submit">수정하기</button>
+		</form>
+	</div>
 	
 	<script>
       	ClassicEditor.create( document.querySelector( '#editor' ) );
-      	
-      	
     </script>
 </body>
 </html>

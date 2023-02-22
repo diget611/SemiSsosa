@@ -43,7 +43,6 @@ public class ReplyController extends HttpServlet {
 		String content = request.getParameter("reply");
 				
 		ReplyVo vo = new ReplyVo();
-		
 		int result = -1;
 		
 		if(request.getSession().getAttribute("login") != null) {

@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -12,55 +14,67 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
-	${boardDetail }
-	<button type="button" class="btn update">수정</button>
-	<button type="button" class="btn delete">삭제</button>
-	<hr>
-	<c:forEach items="${replyList }" var="reply">
-		<c:choose>
-			<c:when test="${reply.floor eq 0 }">
-				<span>${reply.content }</span>
-				<span>${reply.writer }</span>
-				<button type="button" class="btn replyToRe">reply</button>
-				<button type="button" class="btn replyDelete">삭제</button>
-				<form action="reply" method="post">
-					<input type="hidden" name="idx" value="${reply.idx }">
-					<input type="hidden" name="writer" value="${reply.writer }">
-					<input type="hidden" name="havr" value="${reply.havr }">
-					<input type="hidden" name="postNumber" value="${reply.postNumber }">
-					<input type="hidden" name="orders" value="${reply.orders }">
-					<input type="hidden" name="floor" value="${reply.floor}">
-					<input type="hidden" name="groupNum" value="${reply.groupNum }">
-				</form>
-				<hr>
-			</c:when>
-			<c:otherwise>
-				<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
-					<span>&nbsp;&nbsp;</span>
-				</c:forEach>
-				<span>${reply.content }</span>
-				<span>${reply.writer }</span>
-				<button type="button" class="btn replyToRe">reply</button>
-				<button type="button" class="btn replyDelete">삭제</button>
-				<form action="reply" method="post">
-					<input type="hidden" name="idx" value="${reply.idx }">
-					<input type="hidden" name="writer" value="${reply.writer }">
-					<input type="hidden" name="havr" value="${reply.havr }">
-					<input type="hidden" name="postNumber" value="${reply.postNumber }">
-					<input type="hidden" name="orders" value="${reply.orders }">
-					<input type="hidden" name="floor" value="${reply.floor}">
-					<input type="hidden" name="groupNum" value="${reply.groupNum }">
-				</form>
-				<hr>
-			</c:otherwise>
-		</c:choose>
+	<div class="container-center">
+		<div>
+			${boardDetail.postName}
+		</div>
+		<div>
+			${boardDetail.writer }
+			${boardDetail.views }
+			${boardDetail.createDate }
+		</div>
+		<div>
+			${boardDetail.content }
+		</div>
 		
-	</c:forEach>
-	<form action="reply" method="post">
-		<input type="hidden" name="postNumber" value="${boardDetail.idx }">
-		<input type="text" name="reply">
-		<button class="btn reply">reply</button>
-	</form>
+		<button type="button" class="btn update">수정</button>
+		<button type="button" class="btn delete">삭제</button>
+		<hr>
+		<c:forEach items="${replyList }" var="reply">
+			<c:choose>
+				<c:when test="${reply.floor eq 0 }">
+					<span>${reply.content }</span>
+					<span>${reply.writer }</span>
+					<button type="button" class="btn replyToRe">reply</button>
+					<button type="button" class="btn replyDelete">삭제</button>
+					<form action="reply" method="post">
+						<input type="hidden" name="idx" value="${reply.idx }">
+						<input type="hidden" name="writer" value="${reply.writer }">
+						<input type="hidden" name="havr" value="${reply.havr }">
+						<input type="hidden" name="postNumber" value="${reply.postNumber }">
+						<input type="hidden" name="orders" value="${reply.orders }">
+						<input type="hidden" name="floor" value="${reply.floor}">
+						<input type="hidden" name="groupNum" value="${reply.groupNum }">
+					</form>
+					<hr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
+						<span>&nbsp;&nbsp;</span>
+					</c:forEach>
+					<span>${reply.content }</span>
+					<span>${reply.writer }</span>
+					<button type="button" class="btn replyToRe">reply</button>
+					<button type="button" class="btn replyDelete">삭제</button>
+					<form action="reply" method="post">
+						<input type="hidden" name="idx" value="${reply.idx }">
+						<input type="hidden" name="writer" value="${reply.writer }">
+						<input type="hidden" name="havr" value="${reply.havr }">
+						<input type="hidden" name="postNumber" value="${reply.postNumber }">
+						<input type="hidden" name="orders" value="${reply.orders }">
+						<input type="hidden" name="floor" value="${reply.floor}">
+						<input type="hidden" name="groupNum" value="${reply.groupNum }">
+					</form>
+					<hr>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		<form action="reply" method="post">
+			<input type="hidden" name="postNumber" value="${boardDetail.idx }">
+			<input type="text" name="reply">
+			<button class="btn reply">reply</button>
+		</form>
+	</div>
 	
 	<script>
 		$('.btn.replyToRe').on("click", clickReplyToRe);
@@ -69,12 +83,12 @@
 		$('.btn.delete').on("click", clickDelete);
 		
 		function clickReplyToRe() {
-			if($(this).next().children('[name=groupNum]').next('[name=reply]').html() == null) {
+			if($(this).next().next().children('[name=groupNum]').next('[name=reply]').html() == null) {
 				console.log("a");
-				$(this).next().children('[name=groupNum]').after('<input type="text" name="reply"><button type="submit" class="btn reply">reply</button>');
+				$(this).next().next().children('[name=groupNum]').after('<input type="text" name="reply"><button type="submit" class="btn reply">reply</button>');
 			} else {
 				console.log("b");
-				$(this).next().children('[name=groupNum]').next().html('');
+				$(this).next().next().children('[name=groupNum]').next().html('');
 			}
 		}
 		

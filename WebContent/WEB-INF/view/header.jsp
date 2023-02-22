@@ -1,30 +1,37 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<div>
-	<button type="button" class="btn title">title</button>
-</div>
-<div>
-	<button type="button" class="btn board1">board1</button>
-</div>
-<div>
-	<button type="button" class="btn board2">board2</button>
-</div>
-<div>
-	<button type="button" class="btn board3">board3</button>
-</div>
-<div>
-	<c:choose>
-		<c:when test="${empty login }">
-			<button type="button" class="btn login">로그인</button>
-		</c:when>
-		<c:otherwise>
-			<button type="button" class="btn logout">로그아웃</button>
-		</c:otherwise>
-	</c:choose>
-</div>
-<hr>
+<nav class="navbar bg-light">
+	<div class="container-fluid">
+		<a class="btn navbar-brand title">TITLE</a>
+		<div>
+			<c:choose>
+				<c:when test="${empty login }">
+					<button type="button" class="btn btn-secondary login">로그인</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-secondary mypage">마이페이지</button>
+					<button type="button" class="btn btn-secondary logout">로그아웃</button>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+</nav>
+
+<ul class="nav mb-3">
+  <li class="nav-item">
+    <a class="nav-link text-dark" href="<%=request.getContextPath()%>/board?idx=1">board1</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark" href="<%=request.getContextPath()%>/board?idx=2">board2</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark" href="<%=request.getContextPath()%>/board?idx=3">board3</a>
+  </li>
+</ul>
 
 
 <script>
@@ -34,7 +41,11 @@
 	$(".btn.board1").on("click", toBoard1);
 	$(".btn.board2").on("click", toBoard2);
 	$(".btn.board3").on("click", toBoard3);
+	$('.btn.mypage').on("click", clickMypage);
 	
+	function clickMypage() {
+		location.href="<%=request.getContextPath()%>/mypage";
+	}
 	function clickLogin() {
 		console.log("로그인 버튼 클릭");
 		location.href="<%=request.getContextPath()%>/login";

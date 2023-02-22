@@ -1,3 +1,5 @@
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/reset.css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/main.css">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,22 +13,44 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-	<form action="updateinfo" method="post" onsubmit="return checkPassword();">
-		ID : <input type="text" name="id" value="${info.id }" disabled>${info.id }<br>
-		현재PW : <input type="password" name="pwNow"><br>
-		변경할PW : <input type="password" name="pwChange" class="change" disabled><br>
-		PW확인 : <input type="password" name="pwCheck" class="change" disabled><br>
-		NAME : <input type="text" name="name" value="${info.name }" class="change" disabled><br>
-		EMAIL : <input type="text" name="email" value="${info.email }" class="change" disabled><br>
-		<button type="button">수정</button>
-	</form>
+	<jsp:include page="/WEB-INF/view/header.jsp"/>
+	<div class="container-center">
+		<form action="updateinfo" method="post" onsubmit="return checkPassword();">
+			<div class="mb-3">
+				<label class="form-label">아이디</label>
+				<input type="text" class="form-control" name="id" value="${info.id }" disabled>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">현재 패스워드</label>
+				<input type="password" class="form-control change" name="pwNow">
+			</div>
+			<div class="mb-3">
+				<label class="form-label">변경할 패스워드</label>
+				<input type="password" class="form-control change" name="pwChange" disabled>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">패스워드 확인</label>
+				<input type="password" class="form-control change" name="pwCheck" disabled>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">이름</label>
+				<input type="text" class="form-control change" name="name" value="${info.name }" disabled>
+			</div>
+			<div class="mb-3">
+				<label class="form-label">이름</label>
+				<input type="text" class="form-control change" name="email" value="${info.email }" disabled>
+			</div>
+			<button type="button" class="btn btn-secondary me-1">수정</button>
+		</form>
+	</div>
+	
 	<script>
 		$('button').on("click", changeStatus);
 		function changeStatus() {
-			if($('[name=pwNow]').val() === '${info.password}') {
+			if($('[name=pwNow]').val() == "${info.password}") {
 				$('.change').attr("disabled", false);
 				$('[name=pwNow]').attr("disabled", true);
-				$('button').after('<button type="submit">수정완료</button>');
+				$('button').after('<button type="submit" class="btn btn-secondary">수정완료</button>');
 			} else {
 				alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인하세요.");
 			}

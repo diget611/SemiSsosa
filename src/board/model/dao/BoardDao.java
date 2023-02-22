@@ -14,11 +14,13 @@ import static common.jdbc.JDBCTemplate.*;
 
 public class BoardDao {
 
-	public List<BoardVo> getBoard(Connection conn, String idx) {
+	public List<BoardVo> getBoard(Connection conn, String idx, int start, int end) {
 		List<BoardVo> result = null;
 		
-		String sql = "SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T"
-				+ " WHERE CATEGORY = ? AND DELETEDATE IS NULL ORDER BY IDX DESC";
+		String sql = "SELECT * FROM "
+				+ " (SELECT ROWNUM AS ORD, IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM( "
+				+ " SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T WHERE CATEGORY = 1 AND DELETEDATE IS NULL ORDER BY IDX DESC))\r\n"
+				+ "WHERE ORD BETWEEN 1 AND 10;";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -320,6 +322,30 @@ public class BoardDao {
 			close(pstmt);
 		}
 		
+		return result;
+	}
+
+	public int getBoardCnt(Connection conn, String idx) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) CNT FROM BOARD_T WHERE CATEGORY = ? AND DELETEDATE IS NULL";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idx);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
 		return result;
 	}
 
