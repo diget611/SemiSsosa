@@ -31,6 +31,7 @@ public class BoardService {
 		ReplyVo result = null;
 		Connection conn = getConnection();
 		result = new BoardDao().getReplyInfo(conn, postNumber);
+		close(conn);
 		return result;
 	}
 	
@@ -62,6 +63,38 @@ public class BoardService {
 		int result = -1;
 		Connection conn = getConnection();
 		result = new BoardDao().insertReplyTo(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int updateBoard(BoardVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().updateBoard(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int deleteBoard(int idx) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().deleteBoard(conn, idx);
+		close(conn);
+		return result;
+	}
+
+	public int havRep(int idx) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().havRep(conn, idx);
+		close(conn);
+		return result;
+	}
+
+	public int deleteReply(int idx) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().deleteReply(conn, idx);
 		close(conn);
 		return result;
 	}

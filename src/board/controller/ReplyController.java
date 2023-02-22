@@ -30,8 +30,6 @@ public class ReplyController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -60,6 +58,7 @@ public class ReplyController extends HttpServlet {
 				vo.setContent(content);
 				vo.setWriter(id);
 				
+				System.out.println(vo);
 				result = new BoardService().insertReply(vo);
 			} else {
 				// 게시글의 댓글에 댓글을 달 때

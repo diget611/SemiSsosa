@@ -49,7 +49,7 @@ public class BoardDao {
 	public BoardVo getBoardDetail(Connection conn, String idx) {
 		BoardVo result = null;
 		
-		String sql = "SELECT IDX, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD_T WHERE IDX = ?";
+		String sql = "SELECT IDX, CATEGORY, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD_T WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -65,6 +65,7 @@ public class BoardDao {
 			if(rs.next()) {
 				result = new BoardVo();
 				result.setContent(rs.getString("content"));
+				result.setCategory(rs.getInt("category"));
 				result.setCreateDate(rs.getDate("createDate"));
 				result.setIdx(rs.getInt("idx"));
 				result.setPostName(rs.getString("postName"));
@@ -84,10 +85,6 @@ public class BoardDao {
 		}
 		
 		return result;
-	}
-	
-	public void addViews() {
-		
 	}
 	
 	public int writePost(Connection conn, BoardVo vo) {
@@ -141,7 +138,7 @@ public class BoardDao {
 	public List<ReplyVo> getReplyList(Connection conn, String idx) {
 		List<ReplyVo> result = null;
 		
-		String sql = "SELECT POSTNUMBER, CONTENT, CREATEDATE, ORDERS, FLOOR, GROUPNUM, WRITER FROM REPLY WHERE POSTNUMBER = ? AND DELETEDATE IS NULL ORDER BY ORDERS";
+		String sql = "SELECT IDX, POSTNUMBER, CONTENT, CREATEDATE, ORDERS, FLOOR, GROUPNUM, WRITER, HAVR FROM REPLY WHERE POSTNUMBER = ? AND DELETEDATE IS NULL ORDER BY ORDERS";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -154,6 +151,7 @@ public class BoardDao {
 			result = new ArrayList<ReplyVo>();
 			while(rs.next()) {
 				ReplyVo vo = new ReplyVo();
+				vo.setIdx(rs.getInt("idx"));
 				vo.setContent(rs.getString("content"));
 				vo.setCreateDate(rs.getDate("createDate"));
 				vo.setFloor(rs.getInt("floor"));
@@ -161,6 +159,7 @@ public class BoardDao {
 				vo.setOrders(rs.getInt("orders"));
 				vo.setWriter(rs.getString("writer"));
 				vo.setPostNumber(rs.getInt("postNumber"));
+				vo.setHavr(rs.getInt("havr"));
 				result.add(vo);
 			}
 			
@@ -177,7 +176,7 @@ public class BoardDao {
 	public int insertReply(Connection conn, ReplyVo vo) {
 		int result = -1;
 //ReplyVo [idx=0, postNumber=3, content=, createDate=null, updateDate=null, deleteDate=null, orders=5, floor=0, groupNum=1, writer=user2]
-		String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, 0, ?, ?)";
+		String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, 0, ?, ?, DEFAULT)";
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -203,16 +202,22 @@ public class BoardDao {
 
 	public int insertReplyTo(Connection conn, ReplyVo vo) {
 		int result = -1;
+		int resultHavr = -1;
 		int resultOrder = -1;
 		//ReplyVo [idx=0, postNumber=13, content=, createDate=null, updateDate=null, deleteDate=null, orders=1, floor=0, groupNum=1, writer=user2]
-			String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?, ?, ?)";
+			String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?, ?, ?, DEFAULT)";
+			String sqlHavr = "UPDATE REPLY SET HAVR = 1 WHERE ORDERS = ?";
 			String sqlOrder = "UPDATE REPLY SET ORDERS = ORDERS + 1 WHERE ORDERS > ?"; 
 			PreparedStatement pstmt = null;
+			PreparedStatement pstmtHavr = null;
 			PreparedStatement pstmtOrder = null;
 			try {
+				pstmtHavr = conn.prepareStatement(sqlHavr);
+				pstmtHavr.setInt(1, vo.getOrders());
+				resultHavr = pstmtHavr.executeUpdate();
+				
 				pstmtOrder = conn.prepareStatement(sqlOrder);
 				pstmtOrder.setInt(1, vo.getOrders());
-				
 				resultOrder = pstmtOrder.executeUpdate();
 				
 				pstmt = conn.prepareStatement(sql);
@@ -225,7 +230,7 @@ public class BoardDao {
 				
 				result = pstmt.executeUpdate();
 				
-				if(result > 0 && resultOrder > 0) {
+				if(result > 0 && resultOrder > 0 && resultHavr > 0) {
 					commit(conn);
 				}
 			} catch (SQLException e) {
@@ -235,6 +240,87 @@ public class BoardDao {
 			}
 			
 			return result;
+	}
+
+	public int updateBoard(Connection conn, BoardVo vo) {
+		int result = -1;
+		String sql = "UPDATE BOARD_T SET POSTNAME = ?, CONTENT = ?, UPDATEDATE = SYSTIMESTAMP WHERE IDX = ?";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPostName());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setInt(3, vo.getIdx());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteBoard(Connection conn, int idx) {
+		int result = -1;
+		String sql = "UPDATE BOARD_T SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ?";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int havRep(Connection conn, int idx) {
+		int result = -1;
+		String sql = "SELECT COUNT(*) CNT FROM REPLY WHERE POSTNUMBER = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteReply(Connection conn, int idx) {
+		int result = -1;
+		String sql = "UPDATE REPLY SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ?";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 
