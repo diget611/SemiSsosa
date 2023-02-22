@@ -40,5 +40,13 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+
+	public int checkId(String id) {
+		int result = 0;
+		Connection conn = getConnection();
+		result = new MemberDao().checkId(conn, id);
+		close(conn);
+		return result;
+	}
 	
 }

@@ -42,7 +42,7 @@ public class MemberDao {
 
 	public int enroll(Connection conn, MemberVo vo) {
 		int result = -1;
-		String sql = "INSERT INTO MEMBER VALUES(SEQ_MEM.NEXTVAL, ?, ?, ?, ?)";
+		String sql = "INSERT INTO MEMBER VALUES(SEQ_MEMBER.NEXTVAL, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -114,6 +114,31 @@ public class MemberDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int checkId(Connection conn, String id) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) CNT FROM MEMBER WHERE ID = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
 			close(pstmt);
 		}
 		

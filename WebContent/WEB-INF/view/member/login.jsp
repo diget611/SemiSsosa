@@ -24,8 +24,19 @@
 				<input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
 				<label for="floatingPassword">Password</label>
 			</div>
-			<button type="submit" class="btn btn-secondary btn-lg">로그인</button>
+			<div class="row justify-content-center">
+				<button type="submit" class="btn btn-secondary col-2">로그인</button>
+				<button type="button" class="btn btn-secondary ms-1 col-2 enroll">회원가입</button>
+			</div>
 		</form>
+		
+		<script>
+			$('.btn.enroll').on("click", clickEnroll);
+			
+			function clickEnroll() {
+				location.href = "<%=request.getContextPath()%>/enroll";
+			}
+		</script>
 	</div>
 </body>
 </html>
