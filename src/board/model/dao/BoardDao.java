@@ -181,8 +181,14 @@ public class BoardDao {
 		int result = -1;
 //ReplyVo [idx=0, postNumber=3, content=, createDate=null, updateDate=null, deleteDate=null, orders=5, floor=0, groupNum=1, writer=user2]
 		String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, 0, ?, ?, DEFAULT)";
+		String sqlUp = "UPDATE BOARD_T SET HAVR = 1 WHERE IDX = ?";
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmtUp = null;
 		try {
+			pstmtUp = conn.prepareStatement(sqlUp);
+			pstmtUp.setInt(1, vo.getPostNumber());
+			pstmtUp.executeUpdate();
+			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getPostNumber());
 			pstmt.setString(2, vo.getContent());
@@ -269,7 +275,7 @@ public class BoardDao {
 
 	public int deleteBoard(Connection conn, int idx) {
 		int result = -1;
-		String sql = "UPDATE BOARD_T SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ?";
+		String sql = "UPDATE BOARD_T SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ? AND HAVR = 0";
 		PreparedStatement pstmt = null;
 		
 		try {
