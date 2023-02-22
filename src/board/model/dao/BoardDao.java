@@ -17,16 +17,18 @@ public class BoardDao {
 	public List<BoardVo> getBoard(Connection conn, String idx, int start, int end) {
 		List<BoardVo> result = null;
 		
-		String sql = "SELECT * FROM "
+		String sql = "SELECT ORD, IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM "
 				+ " (SELECT ROWNUM AS ORD, IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM( "
-				+ " SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T WHERE CATEGORY = 1 AND DELETEDATE IS NULL ORDER BY IDX DESC))\r\n"
-				+ "WHERE ORD BETWEEN 1 AND 10;";
+				+ " SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T WHERE CATEGORY = ? AND DELETEDATE IS NULL ORDER BY IDX DESC)) "
+				+ "WHERE ORD BETWEEN ? AND ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idx);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			
 			result = new ArrayList<BoardVo>();

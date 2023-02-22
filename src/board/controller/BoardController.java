@@ -60,9 +60,8 @@ public class BoardController extends HttpServlet {
 		}
 		end = start + 9;
 		
-		System.out.println(start + "|" + end);
-		
-		System.out.println(currPage);
+		int startBoard;
+		int endBoard;
 		
 		request.setAttribute("page", page);
 		request.setAttribute("category", idx);
