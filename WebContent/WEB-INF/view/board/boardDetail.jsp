@@ -27,17 +27,17 @@
 			${boardDetail.content }
 		</div>
 		
-		<button type="button" class="btn update">수정</button>
-		<button type="button" class="btn delete">삭제</button>
+		<button type="button" class="btn update btn-secondary">수정</button>
+		<button type="button" class="btn delete btn-secondary">삭제</button>
 		<hr>
 		<c:forEach items="${replyList }" var="reply">
 			<c:choose>
 				<c:when test="${reply.floor eq 0 }">
 					<span>${reply.content }</span>
 					<span>${reply.writer }</span>
-					<button type="button" class="btn replyToRe">reply</button>
-					<button type="button" class="btn replyDelete">삭제</button>
-					<form action="reply" method="post">
+					<button type="button" class="btn replyToRe btn-secondary">댓글</button>
+					<button type="button" class="btn replyDelete btn-secondary">삭제</button>
+					<form action="reply" method="post" class="row g-3">
 						<input type="hidden" name="idx" value="${reply.idx }">
 						<input type="hidden" name="writer" value="${reply.writer }">
 						<input type="hidden" name="havr" value="${reply.havr }">
@@ -54,9 +54,9 @@
 					</c:forEach>
 					<span>${reply.content }</span>
 					<span>${reply.writer }</span>
-					<button type="button" class="btn replyToRe">reply</button>
-					<button type="button" class="btn replyDelete">삭제</button>
-					<form action="reply" method="post">
+					<button type="button" class="btn replyToRe btn-secondary">댓글</button>
+					<button type="button" class="btn replyDelete btn-secondary">삭제</button>
+					<form action="reply" method="post" class="row g-3">
 						<input type="hidden" name="idx" value="${reply.idx }">
 						<input type="hidden" name="writer" value="${reply.writer }">
 						<input type="hidden" name="havr" value="${reply.havr }">
@@ -69,10 +69,14 @@
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
-		<form action="reply" method="post">
+		<form action="reply" method="post" class="row g-3">
 			<input type="hidden" name="postNumber" value="${boardDetail.idx }">
-			<input type="text" name="reply">
-			<button class="btn reply">reply</button>
+			<div class="col-9">
+				<input type="text" name="reply" class="form-control col-auto">
+			</div>
+			<div class="col-3">
+				<button class="btn reply btn-secondary col-auto">댓글</button>
+			</div>
 		</form>
 	</div>
 	
@@ -83,12 +87,12 @@
 		$('.btn.delete').on("click", clickDelete);
 		
 		function clickReplyToRe() {
-			if($(this).next().next().children('[name=groupNum]').next('[name=reply]').html() == null) {
+			if($(this).next().next().children('[name=groupNum]').next().html() == null) {
 				console.log("a");
-				$(this).next().next().children('[name=groupNum]').after('<input type="text" name="reply"><button type="submit" class="btn reply">reply</button>');
+				$(this).next().next().children('[name=groupNum]').after('<div class="col-9"><input type="text" name="reply" class="form-control col-auto"></div><div class="col-3"><button class="btn reply btn-secondary col-auto">댓글</button></div>');
 			} else {
 				console.log("b");
-				$(this).next().next().children('[name=groupNum]').next().html('');
+				$(this).next().next().children('[name=groupNum]').after().html('');
 			}
 		}
 		

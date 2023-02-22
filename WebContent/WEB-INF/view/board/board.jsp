@@ -15,7 +15,7 @@
 <body>
 	<jsp:include page="/WEB-INF/view/header.jsp"/>
 	<div class="container-center">
-		<h4>게시판임</h4>
+		<h4>게시판<%=request.getParameter("idx") %></h4>
 		<hr>
 		<table class="table table-striped table-hover table-lg">
 			<thead>
@@ -38,7 +38,7 @@
 			</tbody>
 		</table>
 		<nav>
-			<ul class="pagination">
+			<ul class="pagination justify-content-center">
 			<c:choose>
 				<c:when test="${currPage - 1 le 0 }">
 					<li class="page-item disabled"><a class="page-link">Previous</a></li>
