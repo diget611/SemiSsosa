@@ -42,30 +42,40 @@ public class BoardController extends HttpServlet {
 		} else {
 			currPage = 1;
 		}
+		System.out.println(currPage);
 		int pageCount = 10;									// 한 페이지에 출력할 게시글 수
 		int cnt = new BoardService().getBoardCnt(idx); 		// 게시판 카테고리 내 게시글 수
+		System.out.println("cnt : " + cnt);
 		int page = 0;
 		if(cnt % pageCount == 0) {							// 게시판의 페이지 수  
 			page = cnt / pageCount;
 		} else {
 			page = cnt / pageCount + 1;
 		}
+		
+		System.out.println("page : " + page);
 		int start = 0;
 		int end = 0;
 		
-		if(currPage % page == 0) {
-			start = ((currPage / page) - 1) * 10  + 1;
+		if(currPage % 10 == 0) {
+			start = (currPage / 10 - 1) * 10 + 1;
 		} else {
-			start = (currPage / page) * 10  + 1;
+			start = currPage / 10 * 10 + 1;
 		}
-		end = start + 9;
 		
-		int startBoard;
-		int endBoard;
+		if(start + 9 < page) {
+			end = start + 9;
+		} else {
+			end = page;
+		}
 		
+		System.out.println(start + " | " + end);
 		request.setAttribute("page", page);
 		request.setAttribute("category", idx);
-		request.setAttribute("boardList", new BoardService().getBoard(idx, start, end));
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
+		request.setAttribute("currPage", currPage);
+		request.setAttribute("boardList", new BoardService().getBoard(idx, ((currPage - 1) * 10 + 1), ((currPage - 1) * 10 + 10)));
 		request.getRequestDispatcher("/WEB-INF/view/board/board.jsp").forward(request, response);
 	}
 }

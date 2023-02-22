@@ -39,11 +39,25 @@
 		</table>
 		<nav>
 			<ul class="pagination">
-			<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging - 1}">Previous</a></li>
-			<c:forEach var="paging" begin="1" end="${page }" step="1">
+			<c:choose>
+				<c:when test="${currPage - 1 le 0 }">
+					<li class="page-item disabled"><a class="page-link">Previous</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage - 1}">Previous</a></li>
+				</c:otherwise>
+			</c:choose>
+			<c:forEach var="paging" begin="${start }" end="${end }" step="1">
 				<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging}">${paging}</a></li>
 			</c:forEach>
-		    <li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${paging + 1}">Next</a></li>
+	  		<c:choose>
+				<c:when test="${currPage + 1 > page }">
+					<li class="page-item disabled"><a class="page-link">Next</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="<%=request.getContextPath()%>/board?idx=${category}&page=${currPage + 1}">Next</a></li>
+				</c:otherwise>
+			</c:choose>
 	  		</ul>
 		</nav>
 		<button type='button' name='writePost'>글쓰기</button>
