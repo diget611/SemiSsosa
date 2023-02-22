@@ -40,7 +40,7 @@
 				<label class="form-label">이름</label>
 				<input type="text" class="form-control change" name="email" value="${info.email }" disabled>
 			</div>
-			<button type="button" class="btn btn-secondary me-1">수정</button>
+			<button type="button" class="btn btn-secondary me-1 changebtn">수정</button>
 		</form>
 	</div>
 	
@@ -50,7 +50,7 @@
 			if($('[name=pwNow]').val() == "${info.password}") {
 				$('.change').attr("disabled", false);
 				$('[name=pwNow]').attr("disabled", true);
-				$('button').after('<button type="submit" class="btn btn-secondary">수정완료</button>');
+				$('.btn.changebtn').after('<button type="submit" class="btn btn-secondary">수정완료</button>');
 			} else {
 				alert("비밀번호가 일치하지 않습니다. 비밀번호를 확인하세요.");
 			}
