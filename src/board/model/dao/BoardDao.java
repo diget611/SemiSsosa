@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import board.model.vo.BoardVo;
+import board.model.vo.LikeVo;
 import reply.model.vo.ReplyVo;
 
 import static common.jdbc.JDBCTemplate.*;
@@ -354,6 +355,145 @@ public class BoardDao {
 			close(rs);
 			close(pstmt);
 		}
+		return result;
+	}
+
+	public int cntLike(Connection conn, int idx, String id) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) CNT FROM BOARD_VOTE WHERE POST_IDX = ? AND ID = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int insertLike(Connection conn, LikeVo vo) {
+		int result = -1;
+		String sql = "INSERT INTO BOARD_VOTE VALUES(?, ?, ?)";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getIdx());
+			pstmt.setInt(2, vo.getVote());
+			pstmt.setString(3, vo.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int checkLike(Connection conn, int idx, String id) {
+		int result = 0;
+		String sql = "SELECT VOTE FROM BOARD_VOTE WHERE POST_IDX = ? AND ID = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setString(2, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt("VOTE");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteLike(Connection conn, LikeVo vo) {
+		int result = -1;
+		String sql = "DELETE FROM BOARD_VOTE WHERE POST_IDX = ? AND ID = ?";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getIdx());
+			pstmt.setString(2, vo.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int updateLike(Connection conn, LikeVo vo) {
+		int result = -1;
+		String sql = "UPDATE BOARD_VOTE SET VOTE = ? WHERE POST_IDX = ? AND ID = ?";
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getVote());
+			pstmt.setInt(2, vo.getIdx());
+			pstmt.setString(3, vo.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int countLike(Connection conn, int idx, int i) {
+		int result = 0;
+		String sql = "SELECT COUNT(*) CNT FROM BOARD_VOTE WHERE POST_IDX = ? AND VOTE = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.setInt(2, i);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
 		return result;
 	}
 

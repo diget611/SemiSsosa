@@ -36,6 +36,11 @@
 		<div class="mb-3">
   			<textarea class="form-control" rows="10" style="resize: none; background-color: white;" readonly>${boardDetail.content }</textarea>
 		</div>
+		<div class="row justify-content-center mb-3">
+			<button type="button" class="like btn update btn-primary col-2">추천</button>
+			<button class="btn col-1 btn-light ms-1" disabled>${like }</button>
+			<button type="button" class="dislike btn delete btn-danger col-2 ms-1">비추천</button>
+		</div>
 		<div class="row justify-content-end mb-3">
 			<button type="button" class="btn update btn-secondary col-1">수정</button>
 			<button type="button" class="btn delete btn-secondary col-1 ms-1">삭제</button>
@@ -99,6 +104,8 @@
 		$('.btn.replyDelete').on("click", clickReplyDelete);
 		$('.btn.update').on("click", clickUpdate);
 		$('.btn.delete').on("click", clickDelete);
+		$('.btn.like').on("click", clickLike);
+		$('.btn.dislike').on("click", clickDislike);
 		
 		function clickReplyToRe() {
 			if($(this).parent().next().children('[name=groupNum]').next().html() == null) {
@@ -123,6 +130,14 @@
 		
 		function clickDelete() {
 			location.href = "<%=request.getContextPath()%>/deleteBoard?idx=${boardDetail.idx}&writer=${boardDetail.writer}";
+		}
+		
+		function clickLike() {
+			location.href = "<%=request.getContextPath()%>/like?like=1&idx=${boardDetail.idx}";
+		}
+		
+		function clickDislike() {
+			location.href = "<%=request.getContextPath()%>/like?like=-1&idx=${boardDetail.idx}";
 		}
 	</script>
 </body>

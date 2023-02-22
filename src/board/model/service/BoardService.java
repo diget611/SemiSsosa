@@ -5,6 +5,7 @@ import java.util.List;
 
 import board.model.dao.BoardDao;
 import board.model.vo.BoardVo;
+import board.model.vo.LikeVo;
 import reply.model.vo.ReplyVo;
 
 import static common.jdbc.JDBCTemplate.*;
@@ -103,6 +104,54 @@ public class BoardService {
 		int result = 0;
 		Connection conn = getConnection();
 		result = new BoardDao().getBoardCnt(conn, idx);
+		close(conn);
+		return result;
+	}
+
+	public int cntLike(int idx, String id) {
+		int result = 0;
+		Connection conn = getConnection();
+		result = new BoardDao().cntLike(conn, idx, id);
+		close(conn);
+		return result;
+	}
+
+	public int insertLike(LikeVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().insertLike(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int checkLike(int idx, String id) {
+		int result = 0;
+		Connection conn = getConnection();
+		result = new BoardDao().checkLike(conn, idx, id);
+		close(conn);
+		return result;
+	}
+
+	public int deleteLike(LikeVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().deleteLike(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int updateLike(LikeVo vo) {
+		int result = -1;
+		Connection conn = getConnection();
+		result = new BoardDao().updateLike(conn, vo);
+		close(conn);
+		return result;
+	}
+
+	public int countLike(int idx, int i) {
+		int result = 0;
+		Connection conn = getConnection();
+		result = new BoardDao().countLike(conn, idx, i);
 		close(conn);
 		return result;
 	}

@@ -30,10 +30,14 @@ public class UpdateBoardController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = ((MemberVo)request.getSession().getAttribute("login")).getId();
+		String id = "";
+		if(request.getSession().getAttribute("login") == null) {
+			response.sendRedirect(request.getHeader("referer"));
+			return;
+		} else {
+			id = ((MemberVo)request.getSession().getAttribute("login")).getId();
+		}
 		String writer = request.getParameter("writer");
-		
-		System.out.println(id + "|" + writer);
 		
 		if(request.getSession().getAttribute("login") != null && id.equals(writer)) {
 			request.getRequestDispatcher("/WEB-INF/view/board/updateBoard.jsp").forward(request, response);
