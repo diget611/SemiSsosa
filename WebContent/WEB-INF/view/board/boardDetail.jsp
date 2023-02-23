@@ -71,7 +71,7 @@
 							<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
 								<span>&nbsp;&nbsp;</span>
 							</c:forEach>
-							${reply.content }
+							└ ${reply.content }
 						</span>
 						<span class="col-2">${reply.writer }</span>
 						<span class="col-3">${reply.createDate }</span>
