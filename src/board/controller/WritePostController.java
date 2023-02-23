@@ -49,6 +49,8 @@ public class WritePostController extends HttpServlet {
 		vo.setWriter(id);
 		vo.setCategory(category);
 		
+		System.out.println(vo.getPostName());
+		
 		int result = new BoardService().writePost(vo);
 		
 		if(result > 0) {

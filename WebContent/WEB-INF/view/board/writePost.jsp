@@ -26,7 +26,7 @@
 	<div class="container-center">
 		<form action="writePost" method="post">
 			<div class="form-floating mb-3">
-  				<input type="text" class="form-control" placeholder="제목">
+  				<input type="text" class="form-control" placeholder="제목" name="title">
 				<label for="floatingInput">제목</label>
 			</div>
 			<input type="hidden" value="<%=request.getParameter("idx") %>" name="category">

@@ -36,7 +36,7 @@ public class BoardDetailController extends HttpServlet {
 
 		int calLike = likeCount - dislikeCount;
 		System.out.println(likeCount + "|" + dislikeCount + "|" + calLike);
-				
+		System.out.println(new BoardService().getReplyList(idx));
 		request.setAttribute("like", calLike);
 		request.setAttribute("boardDetail", new BoardService().getBoardDetail(idx));
 		request.setAttribute("replyList", new BoardService().getReplyList(idx));

@@ -66,10 +66,10 @@
 					</form>
 				</c:when>
 				<c:otherwise>
-					<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
-						<span>&nbsp;&nbsp;</span>
-					</c:forEach>
 					<div class="row align-items-center m-3">
+						<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
+							<span>&nbsp;&nbsp;</span>
+						</c:forEach>
 						<span class="col-4">${reply.content }</span>
 						<span class="col-2">${reply.writer }</span>
 						<span class="col-3">${reply.createDate }</span>
