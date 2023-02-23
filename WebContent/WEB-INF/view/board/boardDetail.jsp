@@ -67,10 +67,12 @@
 				</c:when>
 				<c:otherwise>
 					<div class="row align-items-center m-3">
-						<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
-							<span>&nbsp;&nbsp;</span>
-						</c:forEach>
-						<span class="col-4">${reply.content }</span>
+						<span class="col-4">
+							<c:forEach var="i" begin="1" end="${reply.floor}" step="1">
+								<span>&nbsp;&nbsp;</span>
+							</c:forEach>
+							${reply.content }
+						</span>
 						<span class="col-2">${reply.writer }</span>
 						<span class="col-3">${reply.createDate }</span>
 						<button type="button" class="btn replyToRe btn-secondary col-1 btn-sm">댓글</button>
