@@ -20,7 +20,7 @@ public class BoardDao {
 		
 		String sql = "SELECT ORD, IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM "
 				+ " (SELECT ROWNUM AS ORD, IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM( "
-				+ " SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD_T WHERE CATEGORY = ? AND DELETEDATE IS NULL ORDER BY IDX DESC)) "
+				+ " SELECT IDX, POSTNAME, CREATEDATE, WRITER, VIEWS FROM BOARD WHERE CATEGORY = ? AND DELETEDATE IS NULL ORDER BY IDX DESC)) "
 				+ "WHERE ORD BETWEEN ? AND ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -54,11 +54,11 @@ public class BoardDao {
 	public BoardVo getBoardDetail(Connection conn, String idx) {
 		BoardVo result = null;
 		
-		String sql = "SELECT IDX, CATEGORY, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD_T WHERE IDX = ?";
+		String sql = "SELECT IDX, CATEGORY, POSTNAME, CONTENT, WRITER, CREATEDATE, VIEWS FROM BOARD WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sqlUp = "UPDATE BOARD_T SET VIEWS = VIEWS + 1 WHERE IDX = ?";
+		String sqlUp = "UPDATE BOARD SET VIEWS = VIEWS + 1 WHERE IDX = ?";
 		PreparedStatement pstmtUp = null;
 		
 		try {
@@ -94,7 +94,7 @@ public class BoardDao {
 	
 	public int writePost(Connection conn, BoardVo vo) {
 		int result = -1;
-		String sql = "INSERT INTO BOARD_T VALUES(SEQ_BOARD.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT, DEFAULT)";
+		String sql = "INSERT INTO BOARD VALUES(SEQ_BOARD.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, DEFAULT, DEFAULT, DEFAULT)";
 		
 		PreparedStatement pstmt = null;
 		
@@ -182,7 +182,7 @@ public class BoardDao {
 		int result = -1;
 //ReplyVo [idx=0, postNumber=3, content=, createDate=null, updateDate=null, deleteDate=null, orders=5, floor=0, groupNum=1, writer=user2]
 		String sql = "INSERT INTO REPLY VALUES(SEQ_REPLY.NEXTVAL, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, 0, ?, ?, DEFAULT)";
-		String sqlUp = "UPDATE BOARD_T SET HAVR = 1 WHERE IDX = ?";
+		String sqlUp = "UPDATE BOARD SET HAVR = 1 WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		PreparedStatement pstmtUp = null;
 		try {
@@ -255,7 +255,7 @@ public class BoardDao {
 
 	public int updateBoard(Connection conn, BoardVo vo) {
 		int result = -1;
-		String sql = "UPDATE BOARD_T SET POSTNAME = ?, CONTENT = ?, UPDATEDATE = SYSTIMESTAMP WHERE IDX = ?";
+		String sql = "UPDATE BOARD SET POSTNAME = ?, CONTENT = ?, UPDATEDATE = SYSTIMESTAMP WHERE IDX = ?";
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -276,7 +276,7 @@ public class BoardDao {
 
 	public int deleteBoard(Connection conn, int idx) {
 		int result = -1;
-		String sql = "UPDATE BOARD_T SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ? AND HAVR = 0";
+		String sql = "UPDATE BOARD SET DELETEDATE = SYSTIMESTAMP WHERE IDX = ? AND HAVR = 0";
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -336,7 +336,7 @@ public class BoardDao {
 
 	public int getBoardCnt(Connection conn, String idx) {
 		int result = 0;
-		String sql = "SELECT COUNT(*) CNT FROM BOARD_T WHERE CATEGORY = ? AND DELETEDATE IS NULL";
+		String sql = "SELECT COUNT(*) CNT FROM BOARD WHERE CATEGORY = ? AND DELETEDATE IS NULL";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		

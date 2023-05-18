@@ -16,7 +16,7 @@ public class JDBCTemplate {
 			// 개인 pc용
 			// conn = DriverManager.getConnection("jdbc:oracle:thin:@121.136.127.43:1521:xe", "KH", "KH");
 			// 학원 pc용
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "KH", "KH");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "SEMI", "SEMI");
 			conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
